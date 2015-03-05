@@ -7,15 +7,15 @@ print("Program Running...")
 mass = 1 
 K = 1
 omegaD = 0.1
-vDamp = 0.1
+vDamp = 0.0
 
 #basic status operations
 
-old_calcForce = lambda x: (-(2/pi)) if (x>0) else ((2/pi) if (x<0) else 0)
+calcForce = lambda x: (-(2/pi)) if (x>0) else ((2/pi) if (x<0) else 0)
 
 calcDamping = lambda vNow: vNow*vDamp
 
-calcForce = lambda x: (-1)*K*x
+old_calcForce = lambda x: (-1)*K*x
 
 calcAccel = lambda F: F/mass
 
@@ -46,8 +46,13 @@ vSteps = []
 
 old_vNow = initV
 old_xNow = initX    
+
 old_xSteps = []
 old_vSteps = []
+
+fSteps = []
+old_fSteps = []
+
 vError = []
 xError = []
 
@@ -55,8 +60,11 @@ xError = []
 ##### main "for" loop - do N steps if simulation #####
 for step in range(1,N): 
 
+    fSteps.append(calcForce(xNow))
+    old_fSteps.append(old_calcForce(old_xNow))
+
     aNow = calcAccel(calcForce(xNow)-calcDamping(vNow))   # calculate acceleration at point x        
-    old_aNow = calcAccel(old_calcForce(old_xNow))
+    old_aNow = calcAccel(old_calcForce(old_xNow)-calcDamping(old_vNow))
 
     old_xNow = old_xNow + calcDeltaX(old_vNow,old_aNow,delT)
     old_vNow = old_vNow + calcDeltaV(old_aNow,delT)
@@ -68,6 +76,8 @@ for step in range(1,N):
     tSteps.append(timeNow)    # store current time for plotting
     xSteps.append(xNow)       # store current location for plotting
     vSteps.append(vNow)
+    old_xSteps.append(old_xNow)
+    old_vSteps.append(old_vNow)
 
     vError.append(abs(vNow-old_vNow))
     xError.append(abs(xNow-old_xNow))
@@ -82,3 +92,10 @@ plot(tSteps,vError)
 plot(tSteps,xError)
 show()
 
+plot(tSteps,vSteps)
+plot(tSteps,old_vSteps)
+show()
+
+plot(tSteps,fSteps)
+plot(tSteps,old_fSteps)
+show()
