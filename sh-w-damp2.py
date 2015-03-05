@@ -7,12 +7,12 @@ print("Program Running...")
 ###Program Constants
 mass = 1
 K = 1
-omegaD = 0.1 
+omegaD = 10 
 omegaD_0 = 0 #when this value is not zero, omegaD will be the multiple of omega0 by this amount - only valid if showOldPlot==1
 vDamp = 0.000 #Dampening coeff
 showOldPlot=1 #Value of 1 will simulate and display the oscillator without driving it 
-totalTime = 10*2*pi #Total time to simulate
-N = 10000 # Number of simulation steps (more = more accuracy)
+totalTime = 1*2*pi #Total time to simulate
+N = 100000 # Number of simulation steps (more = more accuracy)
 
 #basic status operations
 
