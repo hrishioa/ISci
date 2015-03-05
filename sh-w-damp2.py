@@ -8,12 +8,13 @@ mass = 1
 K = 1
 omegaD = 0.1
 vDamp = 0.1
+showOldPlot=0
 
 #basic status operations
 
 calcForce = lambda x: (-1)*K*x
 
-calcAccel = lambda F: F/mass
+calcAccel = lambda F: F/mass    
 
 calcDeltaV = lambda aNow,delT: aNow*delT
 
@@ -37,7 +38,7 @@ timeNow = 0
 
 
 ##### Time handling ##### 
-totalTime = 5*2*pi #Total time to simulate
+totalTime = 20*2*pi #Total time to simulate
 N = 10000 # Number of simulation steps (more = more accuracy)
 delT = totalTime/N  #Time for each time step
 
@@ -54,7 +55,7 @@ period = 0;
 print "Running Second loop..."
 
 ##### main "for" loop - do N steps if simulation #####
-for step in range(1,N): 
+for step in range(1,N*showOldPlot): 
     aNow = calcAccel(calcForce(xNow)-calcDamp(vNow))   # calculate acceleration at point x        
 
     #xNow is relative to Z position, once the system starts moving. 
@@ -65,7 +66,6 @@ for step in range(1,N):
     
     timeNow = timeNow+delT                      # update time
     
-    tSteps.append(timeNow)    # store current time for plotting
     xSteps.append(xNow)       # store current location for plotting
     vSteps.append(vNow)
 
@@ -95,20 +95,26 @@ for step in range(1,N):
     
     timeNow = timeNow+delT                      # update time
     
+    tSteps.append(timeNow)    # store current time for plotting
     zSteps.append(zNow)
     xzSteps.append(xzNow)
     vzSteps.append(vzNow)
 
 ##### What is done here is to numerically calculate period and frequency ######
-print "Period: "+str(period)
-print "Frequency: "+str(1/period)
+if(showOldPlot==1):
+    print "Period: "+str(period)
+    print "Frequency: "+str(1/period)
 
-plot(tSteps,xSteps)
-plot(tSteps,vSteps)
+    plot(tSteps,xSteps)
+    plot(tSteps,vSteps)
 
-show()    
+    show()    
 
-plot(tSteps,zSteps)
-plot(tSteps,xzSteps)
-plot(tSteps,vzSteps)
+plot(tSteps,zSteps,label="Z(t)")
+plot(tSteps,xzSteps,label="X(t)")
+plot(tSteps,vzSteps,label="V(t)")
+xlabel('Time/s')
+#text(10,-1.3,'Damping Coefficient: '+str(vDamp)+', m: '+str(mass)+', k: '+str(K)+', omegaD: '+str(omegaD),fontsize=14)
+text(10,-1.3,'Damping Coefficient: '+str(vDamp)+', m: '+str(mass)+', k: '+str(K)+', '+r'$\omega_d$: '+str(omegaD),fontsize=14)
+legend()
 show()
