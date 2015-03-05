@@ -84,8 +84,10 @@ for step in range(1,N):
 
 
 ##### See what you have done here ######
-plot(tSteps,xSteps)
-plot(tSteps,vSteps)
+plot(tSteps,xSteps,label='X(t)')
+plot(tSteps,vSteps,label='V(t)')
+xlabel('Time/s')
+legend()
 show()    
 
 plot(tSteps,vError)

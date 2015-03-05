@@ -7,12 +7,14 @@ print("Program Running...")
 ###Program Constants
 mass = 1
 K = 1
-omegaD = 10 
-omegaD_0 = 0 #when this value is not zero, omegaD will be the multiple of omega0 by this amount - only valid if showOldPlot==1
-vDamp = 0.000 #Dampening coeff
+omegaD = 1 
+omegaD_0 = 1 #when this value is not zero, omegaD will be the multiple of omega0 by this amount - only valid if showOldPlot==1
+vDamp = 0.01 #Dampening coeff
 showOldPlot=1 #Value of 1 will simulate and display the oscillator without driving it 
-totalTime = 1*2*pi #Total time to simulate
-N = 100000 # Number of simulation steps (more = more accuracy)
+seconds = 150
+totalTime = seconds*2*pi #Total time to simulate
+
+N = 1000*seconds # Number of simulation steps (more = more accuracy)
 
 #basic status operations
 
@@ -116,10 +118,10 @@ if(showOldPlot==1):
     print "Period: "+str(period)
     print "Frequency: "+str(1/period)
 
-    plot(tSteps,xSteps)
-    plot(tSteps,vSteps)
+    #plot(tSteps,xSteps)
+    #plot(tSteps,vSteps)
 
-    show()    
+    #show()    
 
 plot(tSteps,zSteps,label="Z(t)")
 plot(tSteps,xzSteps,label="X(t)")

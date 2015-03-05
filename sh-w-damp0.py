@@ -79,7 +79,7 @@ def main():
     tSteps = []
     xSteps = []
     nd_xSteps = []
-    
+    temp_xSteps = []  
     
     ##### main "for" loop - do N steps if simulation #####
     for step in range(1,N): 
@@ -94,7 +94,12 @@ def main():
         timeNow = timeNow+delT    # update time
         
         tSteps.append(timeNow)    # store current time for plotting
-        xSteps.append(xNow/1000)       # store current location for plotting
+        temp_xSteps.append(xNow/1000)       # store current location for plotting
+
+    for step in range(1,N-2):
+        xSteps.append(temp_xSteps[len(temp_xSteps)-step-1])
+
+    temp_xSteps = []
 
     timeNow = 0
 
@@ -107,7 +112,12 @@ def main():
         nd_vNow = nd_vNow + calcDeltaV(nd_aNow,delT)   # update velocity
         timeNow = timeNow+delT    # update time
 
-        nd_xSteps.append(nd_xNow)       # store current location for plotting
+        temp_xSteps.append(nd_xNow)       # store current location for plotting
+
+    for step in range(1,N-2):
+        nd_xSteps.append(temp_xSteps[len(temp_xSteps)-step-1])
+
+    tSteps = tSteps[0:len(tSteps)-2]
 
     ##### See what you have done here ######
     plot(tSteps,xSteps,label='Damped')
