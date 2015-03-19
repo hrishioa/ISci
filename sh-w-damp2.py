@@ -9,9 +9,9 @@ mass = 1
 K = 1
 omegaD = 1 
 omegaD_0 = 1 #when this value is not zero, omegaD will be the multiple of omega0 by this amount - only valid if showOldPlot==1
-vDamp = 0.01 #Dampening coeff
+vDamp = 0.00 #Dampening coeff
 showOldPlot=1 #Value of 1 will simulate and display the oscillator without driving it 
-seconds = 150
+seconds = 15
 totalTime = seconds*2*pi #Total time to simulate
 
 N = 1000*seconds # Number of simulation steps (more = more accuracy)
