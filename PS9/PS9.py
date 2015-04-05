@@ -14,6 +14,7 @@ files['2-none'] = 'Bead2-NoneXY.csv'
 print "Program Running..."
 
 data = {}
+ffts = {}
 
 data['1-77'] = []
 data['2-45'] = []
@@ -66,9 +67,12 @@ def main():
 		fftx = np.linspace(0.0, 1.0/(2.0*T), N/2)
 		ffty = fft(dist)
 		ffty = ffty[1:]
-		plt.plot(fftx, 2.0/N * np.abs(ffty[0:N/2]))
+		ffty = 2.0/N * np.abs(ffty[0:N/2])
+		plt.plot(fftx, ffty)
 		plt.savefig('PS9-'+str(key)+'-fft.png',bbox_inches='tight')
 		plt.show()
+
+		ffts[key] = [fftx,ffty]
 
 		#find maxdelta and the average delta along with the sd
 		deltaD = []
@@ -78,14 +82,32 @@ def main():
 
 		allDelta[key] = deltaD
 
-		#print statistics
-		print "Average Delta: %f with SD %f. Max Delta: %f" % (np.mean(deltaD),np.std(deltaD),np.amax(deltaD))
+		#create a low pass filter and run the location values through it
+		length = 101
+		F_high=.25 #sample value, needs to be experimentally optimized
+		filt = signal.firwin(length,cutoff=.25,window='hann')
+		filt = -filt
+		filt[length/2] = filt[length/2]+1
+
+		out = signal.lfilter(filt, 1, deltaD)
+
+		deltaD = out
 
 	for key,value in allDelta.items():
 		plt.plot(value,label=key)
-		plt.legend()
+		print "Experiment %s: Average Delta: %f with SD %f. Max Delta: %f" % (key,np.mean(value),np.std(value),np.amax(value))
+
+	plt.legend()	
+	plt.savefig('PS9-deltaVal.png',bbox_inches='tight')			
 	plt.show()
-	plt.savefig('PS9-')			
+
+
+	for key,value in ffts.items():
+		plt.plot(value[0],value[1],label=key)
+
+	plt.legend()
+	plt.savefig('PS9-fft.png',bbox_inches='tight')
+	plt.show()
 
 if __name__=="__main__":
 	main()
