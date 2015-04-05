@@ -5,7 +5,6 @@ import math
 
 def throwDie(times):
 	mean = float(0)
-
 	for i in range(0,times):
 		mean += randint(1,6)
 
